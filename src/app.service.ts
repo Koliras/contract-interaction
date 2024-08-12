@@ -11,23 +11,36 @@ export class AppService {
     this.sepoliaRpcUrl,
   );
   private privateKey = process.env.PRIVATE_KEY;
+  private signer = new ethers.Wallet(this.privateKey, this.jsonRpcProvider);
 
-  getBalance(wallet: string) {
+  async getBalance(wallet: string) {
     const contract = new ethers.Contract(
       this.contractAddress,
       abi,
       this.jsonRpcProvider,
     );
     try {
-      const balance = contract.interface.encodeFunctionData('balanceOf', [
-        wallet,
-      ]);
+      const balance = await contract.balanceOf(wallet);
       return { balance: ethers.utils.formatUnits(balance, 18) };
     } catch (err) {
       throw new InternalServerErrorException({
         message: `Could not get balance of wallet ${wallet}`,
         error: err,
       });
+    }
+  }
+
+  async addAdmin(address: string) {
+    const contract = new ethers.Contract(
+      this.contractAddress,
+      abi,
+      this.signer,
+    );
+    try {
+      await contract.addAdmin(address);
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err };
     }
   }
 }
