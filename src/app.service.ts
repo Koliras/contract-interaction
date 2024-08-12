@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import abi from '../abi/GooseTokenAbi';
 import { ethers } from 'ethers';
+import 'dotenv/config';
 
 @Injectable()
 export class AppService {
@@ -9,6 +10,7 @@ export class AppService {
   private jsonRpcProvider = new ethers.providers.JsonRpcProvider(
     this.sepoliaRpcUrl,
   );
+  private privateKey = process.env.PRIVATE_KEY;
 
   getBalance(wallet: string) {
     const contract = new ethers.Contract(
