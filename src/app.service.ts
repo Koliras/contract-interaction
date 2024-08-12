@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import abi from '../abi/GooseTokenAbi';
 import { ethers } from 'ethers';
 import 'dotenv/config';
+import GooseTokenAbi from '../abi/GooseTokenAbi';
 
 @Injectable()
 export class AppService {
@@ -12,15 +12,15 @@ export class AppService {
   );
   private privateKey = process.env.PRIVATE_KEY;
   private signer = new ethers.Wallet(this.privateKey, this.jsonRpcProvider);
+  private GOOSE_TOKEN = new ethers.Contract(
+    this.contractAddress,
+    GooseTokenAbi,
+    this.signer,
+  );
 
   async getBalance(wallet: string) {
-    const contract = new ethers.Contract(
-      this.contractAddress,
-      abi,
-      this.jsonRpcProvider,
-    );
     try {
-      const balance = await contract.balanceOf(wallet);
+      const balance = await this.GOOSE_TOKEN.balanceOf(wallet);
       return { balance: ethers.utils.formatUnits(balance, 18) };
     } catch (err) {
       throw new InternalServerErrorException({
@@ -31,13 +31,8 @@ export class AppService {
   }
 
   async addAdmin(address: string) {
-    const contract = new ethers.Contract(
-      this.contractAddress,
-      abi,
-      this.signer,
-    );
     try {
-      await contract.addAdmin(address);
+      await this.GOOSE_TOKEN.addAdmin(address);
       return { success: true };
     } catch (err) {
       return { success: false, error: err };
