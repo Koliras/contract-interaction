@@ -38,4 +38,13 @@ export class AppService {
       return { success: false, error: err };
     }
   }
+
+  async removeAdmin(address: string) {
+    try {
+      await this.GOOSE_TOKEN.removeAdmin(address);
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err };
+    }
+  }
 }

@@ -14,4 +14,9 @@ export class AppController {
   addAdmin(@Body() body: { address: string }) {
     return this.appService.addAdmin(body.address);
   }
+
+  @Post('admin/remove')
+  removeAdmin(@Body() body: { address: string }) {
+    return this.appService.removeAdmin(body.address);
+  }
 }
