@@ -19,4 +19,14 @@ export class AppController {
   removeAdmin(@Body() body: { address: string }) {
     return this.appService.removeAdmin(body.address);
   }
+
+  @Post('blacklist/add')
+  addToBlacklist(@Body() body: { address: string }) {
+    return this.appService.addToBlacklist(body.address);
+  }
+
+  @Post('blacklist/remove')
+  removeFromBlacklist(@Body() body: { address: string }) {
+    return this.appService.removeFromBlacklist(body.address);
+  }
 }

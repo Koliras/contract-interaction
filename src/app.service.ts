@@ -47,4 +47,22 @@ export class AppService {
       return { success: false, error: err };
     }
   }
+
+  async addToBlacklist(address: string) {
+    try {
+      await this.GOOSE_TOKEN.addToBlacklist(address);
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err };
+    }
+  }
+
+  async removeFromBlacklist(address: string) {
+    try {
+      await this.GOOSE_TOKEN.removeFromBlacklist(address);
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err };
+    }
+  }
 }
