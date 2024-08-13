@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import 'dotenv/config';
 import GooseTokenAbi from '../abi/GooseTokenAbi';
 
@@ -60,6 +60,16 @@ export class AppService {
   async removeFromBlacklist(address: string) {
     try {
       await this.GOOSE_TOKEN.removeFromBlacklist(address);
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err };
+    }
+  }
+
+  async mint(address: string, amount: string) {
+    const a = BigNumber.from(amount);
+    try {
+      await this.GOOSE_TOKEN.mint(address, a);
       return { success: true };
     } catch (err) {
       return { success: false, error: err };

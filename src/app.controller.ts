@@ -29,4 +29,9 @@ export class AppController {
   removeFromBlacklist(@Body() body: { address: string }) {
     return this.appService.removeFromBlacklist(body.address);
   }
+
+  @Post('mint')
+  mintToken(@Body() body: { amount: string; address: string }) {
+    return this.appService.mint(body.address, body.amount);
+  }
 }
