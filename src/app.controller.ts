@@ -34,4 +34,9 @@ export class AppController {
   mintToken(@Body() body: { amount: string; address: string }) {
     return this.appService.mint(body.address, body.amount);
   }
+
+  @Post('transfer')
+  transferToken(@Body() body: { amount: string; address: string }) {
+    return this.appService.transfer(body.address, body.amount);
+  }
 }

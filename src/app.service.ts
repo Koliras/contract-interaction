@@ -75,4 +75,14 @@ export class AppService {
       return { success: false, error: err };
     }
   }
+
+  async transfer(address: string, amount: string) {
+    const a = BigNumber.from(amount);
+    try {
+      const data = await this.GOOSE_TOKEN.transfer(address, a);
+      return { success: true, data };
+    } catch (err) {
+      return { success: false, error: err };
+    }
+  }
 }
